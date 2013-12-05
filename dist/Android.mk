@@ -33,7 +33,7 @@ common_sqlite_flags := \
 common_src_files := sqlite3.c
 
 ifeq ($(WITH_QC_PERF),true)
-common_sqlite_flags += -DQC_PERF
+android_common_sqlite_flags += -DQC_PERF
 endif
 
 # the device library
@@ -45,7 +45,7 @@ ifneq ($(TARGET_ARCH),arm)
 LOCAL_LDLIBS += -lpthread -ldl
 endif
 
-LOCAL_CFLAGS += $(common_sqlite_flags) -DUSE_PREAD64 -Dfdatasync=fdatasync \
+LOCAL_CFLAGS += $(android_common_sqlite_flags) $(common_sqlite_flags) -DUSE_PREAD64 -Dfdatasync=fdatasync \
 				-DHAVE_MALLOC_USABLE_SIZE
 
 LOCAL_SHARED_LIBRARIES := libdl
@@ -73,7 +73,7 @@ ifeq ($(WITH_HOST_DALVIK),true)
     include $(CLEAR_VARS)
     LOCAL_SRC_FILES := $(common_src_files)
     LOCAL_LDLIBS += -lpthread -ldl
-    LOCAL_CFLAGS += $(common_sqlite_flags)
+    LOCAL_CFLAGS += $(android_common_sqlite_flags) $(common_sqlite_flags)
     LOCAL_MODULE:= libsqlite
     LOCAL_SHARED_LIBRARIES += libicuuc-host libicui18n-host
     LOCAL_STATIC_LIBRARIES := liblog libutils libcutils
@@ -105,7 +105,7 @@ ifneq ($(TARGET_ARCH),arm)
 LOCAL_LDLIBS += -lpthread -ldl
 endif
 
-LOCAL_CFLAGS += $(common_sqlite_flags) -DUSE_PREAD64
+LOCAL_CFLAGS += $(android_common_sqlite_flags) $(common_sqlite_flags) -DUSE_PREAD64
 
 LOCAL_MODULE_PATH := $(TARGET_OUT_OPTIONAL_EXECUTABLES)
 
